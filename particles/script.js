@@ -9,10 +9,10 @@
     bgColor             : 'rgba(17, 17, 19, 1)',
     particleColor       : '255, 40, 40',
     lineStyle           : '255, 40, 40',
-    particleRadius      : 10,
+    particleRadius      : 8,
     lineWidth           : '0.5',
     particleCount       : 150,
-    particleMaxVelocity : 1,
+    particleMaxVelocity : 1.5,
     lineLength          : 150,
     particleLife        : 60,
     particleMinLife     : 10,
@@ -30,7 +30,7 @@
   let mouse = {
     x     : null,
     y     : null,
-    radius: 150,
+    radius: 200,
   }
 
   window.addEventListener('mousemove',
@@ -49,9 +49,10 @@
       this.life               = Math.random() * (properties.particleLife * 60 - properties.particleMinLife * 60) + properties.particleMinLife * 60;
       this.particleRadiusLife = (properties.particleRadius - this.life / (properties.particleLife * 60) * (properties.particleRadius - 0.5)) > (properties.particleRadius - 0.5) ? properties.particleRadius - 0.5 : properties.particleRadius - this.life / (properties.particleLife * 60) * (properties.particleRadius - 0.5);
     }
+
     position(){
-      this.x  + this.velocityX + this.particleRadiusLife > w && this.velocityX > 0 || this.x + this.velocityX - this.particleRadiusLife < 0 && this.velocityX < 0 ? this.velocityX *= -1 : this.velocityX;
-      this.y  + this.velocityY + this.particleRadiusLife > h && this.velocityY > 0 || this.y + this.velocityY - this.particleRadiusLife < 0 && this.velocityY < 0 ? this.velocityY *= -1 : this.velocityY;
+      this.x  +  this.velocityX + this.particleRadiusLife > w && this.velocityX > 0 || this.x + this.velocityX - this.particleRadiusLife < 0 && this.velocityX < 0 ? this.velocityX *= -1 : this.velocityX;
+      this.y  +  this.velocityY + this.particleRadiusLife > h && this.velocityY > 0 || this.y + this.velocityY - this.particleRadiusLife < 0 && this.velocityY < 0 ? this.velocityY *= -1 : this.velocityY;
       this.x  += this.velocityX;
       this.y  += this.velocityY;
 
@@ -59,32 +60,20 @@
 
       if (distance < mouse.radius ) {
 
-        let v_x = (mouse.radius - distance)*Math.cos(Math.atan((this.y - mouse.y) / (this.x - mouse.x)));
-        let v_y = (mouse.radius - distance)*Math.sin(Math.atan((this.y - mouse.y) / (this.x - mouse.x)));
+        let v_x = (mouse.radius - distance) * Math.cos(Math.atan((this.y - mouse.y) / (this.x - mouse.x)));
+        let v_y = (mouse.radius - distance) * Math.sin(Math.atan((this.y - mouse.y) / (this.x - mouse.x)));
 
-
-        if (mouse.x < this.x && mouse.y < this.y) {
-          this.x += v_x;
-          this.y += v_y;
-
-        }
-        if (mouse.x > this.x && mouse.y > this.y) {
-          this.x -= v_x;
-          this.y -= v_y;
-
-        }
-        if (mouse.x < this.x && mouse.y > this.y) {
-          this.x -= -v_x;
-          this.y -= -v_y;
-
-        }
-        if (mouse.x > this.x && mouse.y < this.y) {
-          this.x += -v_x;
-          this.y += -v_y;
-        }
-
+          if (mouse.x < this.x) {
+            this.x += v_x / 10;
+            this.y += v_y / 10;
+          }
+          if (mouse.x > this.x) {
+            this.x -= v_x / 10;
+            this.y -= v_y / 10;
+          }
      }
     }
+
     reDraw(){
       ctx.beginPath();
       ctx.arc(this.x, this.y, properties.particleRadius - this.particleRadiusLife < 0 ? 0 : properties.particleRadius - this.particleRadiusLife, 0, Math.PI*2);
@@ -92,6 +81,7 @@
       ctx.fillStyle = 'rgba(' + properties.particleColor + ', 1)';
       ctx.fill();
     }
+
     reCalculateLife(){
       if (this.life < 1) {
         this.x          = Math.random() * w;
