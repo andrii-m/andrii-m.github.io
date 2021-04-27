@@ -1,0 +1,28 @@
+body{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.firstPage{
+  background-color: green;
+  height: 100vh;
+}
+.secondPage{
+}
+.firstBlock{
+  padding: 50px 20px;
+  color: white;
+  min-height: 1200px;
+  background-color: black;
+}
+.secondBlock{
+  min-height: 800px;
+  background-color: blue;
+  padding: 50px 20px;
+}
+
+.footer{
+  height: 500px;
+  background-color: orange;
+}
